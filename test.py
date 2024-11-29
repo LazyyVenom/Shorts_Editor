@@ -1,12 +1,10 @@
 import speech_recognition as sr
-from googletrans import Translator
 import moviepy.editor as mp
 import os
 
 class HinglishCaptioner:
     def __init__(self):
         self.recognizer = sr.Recognizer()
-        self.translator = Translator()
 
     def extract_audio(self, video_path):
         """Extract audio from video file"""
@@ -31,15 +29,12 @@ class HinglishCaptioner:
                 return None
 
     def generate_short_caption(self, transcript, max_words=15):
-        """Generate a short caption by translation and truncation"""
+        """Generate a short caption by truncation"""
         if not transcript:
             return None
         
-        # Translate to English if needed
-        translation = self.translator.translate(transcript, dest='en').text
-        
         # Truncate to max words
-        words = translation.split()
+        words = transcript.split()
         short_caption = ' '.join(words[:max_words])
         
         return short_caption + '...' if len(words) > max_words else short_caption
@@ -72,5 +67,4 @@ if __name__ == "__main__":
 
 # Required dependencies:
 # pip install SpeechRecognition
-# pip install googletrans==3.1.0a0
 # pip install moviepy
