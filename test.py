@@ -1,5 +1,5 @@
 import speech_recognition as sr
-import moviepy.editor as mp
+import moviepy as mp
 import os
 
 class HinglishCaptioner:
