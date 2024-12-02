@@ -33,6 +33,7 @@ class HinglishCaptioner:
         if not transcript:
             return None
         
+        
         # Truncate to max words
         words = transcript.split()
         short_caption = ' '.join(words[:max_words])
