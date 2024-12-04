@@ -18,3 +18,5 @@ video_with_text.write_videofile("output_video.mp4", codec="libx264", fps=video.f
 
 #OK IT IS TAKING TIME TO PROCESS THE VIDEO  
 # GOOD THING - We can set the time duration for texts easily Let's Go
+
+#NGL Text looking good need to make some good functions and A class to make it usable
