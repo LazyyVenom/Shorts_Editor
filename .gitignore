@@ -8,6 +8,7 @@ __pycache__/
 
 #Extras 
 input_video.mp4
+output_video.mp4
 .vscode/
 
 # Distribution / packaging
