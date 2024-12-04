@@ -5,9 +5,9 @@ from moviepy.video.fx import Painting
 
 video = VideoFileClip("input_video.mp4")
 
-text = TextClip("Your Text Here", fontsize=50, color='white')
+text = TextClip(text="Your Text Here", font_size=50, color='white')
 
-text = text.set_duration(video.duration).set_position(("center", "bottom"))
+text = text.duration(video.duration).text_align("center")
 
 video_with_text = CompositeVideoClip([video, text])
 
