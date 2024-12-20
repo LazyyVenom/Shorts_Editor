@@ -39,7 +39,6 @@ class AddCaptions:
         video_with_text.write_videofile(output_path, codec="libx264", fps=self.video.fps)
 
 
-# Example usage
 video_path = "input_video.mp4"
 texts = ["Sample Caption 1", "Sample Caption 2"]
 start_times = [0, 5]
