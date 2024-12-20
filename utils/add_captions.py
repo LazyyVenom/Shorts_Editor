@@ -28,8 +28,6 @@ text = TextClip(
     color="white",
     duration=video.duration,
     text_align="center",
-    size=(video.w, video.h),
-    method="caption",
 )
 video_with_text = CompositeVideoClip([video, text])
 
