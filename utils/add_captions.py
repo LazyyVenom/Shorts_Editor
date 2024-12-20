@@ -1,5 +1,3 @@
-# Required Libraries
-
 from moviepy import VideoFileClip, TextClip, CompositeVideoClip
 from typing import List
 
@@ -38,11 +36,11 @@ class AddCaptions:
         video_with_text = CompositeVideoClip(clips)
         video_with_text.write_videofile(output_path, codec="libx264", fps=self.video.fps)
 
+if __name__ == '__main__':
+    video_path = "input_video.mp4"
+    texts = ["Sample Caption 1", "Sample Caption 2"]
+    start_times = [0, 5]
+    durations = [2, 3]
 
-video_path = "input_video.mp4"
-texts = ["Sample Caption 1", "Sample Caption 2"]
-start_times = [0, 5]
-durations = [2, 3]
-
-add_captions = AddCaptions(video_path, texts, start_times, durations)
-add_captions.add_captions("output_video.mp4")
+    add_captions = AddCaptions(video_path, texts, start_times, durations)
+    add_captions.add_captions("output_video.mp4")
