@@ -1,15 +1,15 @@
 # Required Libraries
 
 from moviepy import VideoFileClip, TextClip, CompositeVideoClip
-from moviepy.video.fx import Painting
 from typing import List
-
 
 class AddCaptions:
     def __init__(
         self,
         video_path: str,
         texts: List[str],
+        start_times: List[int],
+        durations: List[int],
         font_size: int = 50,
         font: str = "static\Coolvetica Rg.otf",
     ):
@@ -17,28 +17,33 @@ class AddCaptions:
         self.font = font
         self.font_size = font_size
         self.texts = texts
+        self.start_times = start_times
+        self.durations = durations
+
+    def add_captions(self, output_path: str):
+        clips = [self.video]
+        for text, start_time, duration in zip(self.texts, self.start_times, self.durations):
+            text_clip = TextClip(
+                font=self.font,
+                text=text,
+                font_size=self.font_size,
+                color="white",
+                method="caption",
+                size=self.video.size,
+                duration=duration,
+                text_align="center",
+            ).with_start(start_time)
+            clips.append(text_clip)
+        
+        video_with_text = CompositeVideoClip(clips)
+        video_with_text.write_videofile(output_path, codec="libx264", fps=self.video.fps)
 
 
-video = VideoFileClip(filename="input_video.mp4")
+# Example usage
+video_path = "input_video.mp4"
+texts = ["Sample Caption 1", "Sample Caption 2"]
+start_times = [0, 5]
+durations = [2, 3]
 
-text = TextClip(
-    font="static\Coolvetica Rg.otf",
-    text="Your Text Here",
-    font_size=50,
-    color="white",
-    duration=video.duration,
-    text_align="center",
-)
-video_with_text = CompositeVideoClip([video, text])
-
-video_with_text.write_videofile("output_video.mp4", codec="libx264", fps=video.fps)
-
-
-# Simplifying the function so that it can be used easily
-
-# This is gonna take some time as the code is updated and chat gpt don't gets the updated one
-
-# OK IT IS TAKING TIME TO PROCESS THE VIDEO
-# GOOD THING - We can set the time duration for texts easily Let's Go
-
-# NGL Text looking good need to make some good functions and A class to make it usable
+add_captions = AddCaptions(video_path, texts, start_times, durations)
+add_captions.add_captions("output_video.mp4")
