@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Shorts_Editor** is an automatic video editing tool created using Python. It helps content creators easily edit short-form videos like YouTube Shorts, Instagram Reels, or TikTok clips.
+**Shorts_Editor** is an automatic video editing tool created using Python. It helps content creators easily edit short-form videos like YouTube Shorts, Instagram Reels, or TikTok clips. 
 
 ## Features
 
