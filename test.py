@@ -1,49 +1,18 @@
-import speech_recognition as sr
-from pydub import AudioSegment
-
-def get_word_timestamps(audio_file_path):
-    recognizer = sr.Recognizer()
-    audio = AudioSegment.from_wav(audio_file_path)
-    duration = len(audio) / 1000.0
-
-    with sr.AudioFile(audio_file_path) as source:
-        audio_data = recognizer.record(source)
-        try:
-            text = recognizer.recognize_google(audio_data, language='en-IN')
-            words = text.split()
-            word_durations = duration / len(words)  
-
-            word_timestamps = []
-            current_time = 0
-
-            for word in words:
-                word_timestamps.append({
-                    "word": word,
-                    "start_time": current_time,
-                    "duration": word_durations
-                })
-                current_time += word_durations
-
-            return word_timestamps
-
-        except sr.UnknownValueError:
-            print("Could not understand audio")
-        except sr.RequestError:
-            print("Could not request results; check your network connection")
-
-    return []
+from utils.add_captions import AddCaptions
+from utils.video_utils import add_audio_to_video
+from utils.audio_recognition import get_word_timestamps
 
 if __name__ == "__main__":
+    video_path = "input_video.mp4"
     audio_path = "input_audio.wav"
-    word_timestamps = get_word_timestamps(audio_path)
 
-    texts = [word_info['word'] for word_info in word_timestamps]
+    word_timestamps = get_word_timestamps(audio_path)
+    captions = [word_info['word'] for word_info in word_timestamps]
     start_times = [word_info['start_time'] for word_info in word_timestamps]
     durations = [word_info['duration'] for word_info in word_timestamps]
 
-    for word_info in word_timestamps:
-        print(f"Word: {word_info['word']}, Start Time: {word_info['start_time']:.2f} seconds, Duration: {word_info['duration']:.2f} seconds")
+    video = AddCaptions(video_path, captions, start_times, durations)
+    video.add_captions(captions)
 
-    print("Texts:", texts)
-    print("Start Times:", start_times)
-    print("Durations:", durations)
+    video_with_audio = add_audio_to_video(video, audio_path, 0)
+    video_with_audio.write_videofile("output_video.mp4", codec="libx264", audio_codec="aac")

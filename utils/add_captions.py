@@ -19,7 +19,7 @@ class AddCaptions:
         self.start_times = start_times
         self.durations = durations
 
-    def add_captions(self, output_path: str):
+    def add_captions(self):
         clips = [self.video]
         for text, start_time, duration in zip(
             self.texts, self.start_times, self.durations
@@ -37,9 +37,7 @@ class AddCaptions:
             clips.append(text_clip)
 
         video_with_text = CompositeVideoClip(clips)
-        video_with_text.write_videofile(
-            output_path, codec="libx264", fps=self.video.fps
-        )
+        return video_with_text
 
 
 if __name__ == "__main__":
@@ -51,4 +49,5 @@ if __name__ == "__main__":
     texts = list(map(str.upper, texts))
 
     add_captions = AddCaptions(video_path, texts, start_times, durations)
-    add_captions.add_captions("output_video.mp4")
+    video_with_text = add_captions.add_captions()
+    video_with_text.write_videofile("output_video.mp4", codec="libx264", audio_codec="aac") 
