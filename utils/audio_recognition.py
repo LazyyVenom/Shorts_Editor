@@ -1,37 +1,51 @@
 import speech_recognition as sr
 from pydub import AudioSegment
+from pydub.silence import split_on_silence
+
+def detect_leading_silence(sound, silence_threshold=-40.0, chunk_size=10):
+    trim_ms = 0
+
+    assert chunk_size > 0
+    while trim_ms < len(sound) and sound[trim_ms:trim_ms + chunk_size].dBFS < silence_threshold:
+        trim_ms += chunk_size
+
+    return trim_ms
 
 def get_word_timestamps(audio_file_path):
     recognizer = sr.Recognizer()
     audio = AudioSegment.from_wav(audio_file_path)
-    duration = len(audio) / 1000.0  # total duration in seconds
+    
+    leading_silence_duration = detect_leading_silence(audio) / 1000.0
+    current_time = leading_silence_duration
 
-    with sr.AudioFile(audio_file_path) as source:
-        audio_data = recognizer.record(source)
-        try:
-            text = recognizer.recognize_google(audio_data, language='en-IN')
-            words = text.split()
-            word_durations = duration / len(words)  # average duration per word
+    chunks = split_on_silence(audio, min_silence_len=500, silence_thresh=-40, keep_silence=500)
 
-            word_timestamps = []
-            current_time = 0
+    word_timestamps = []
 
-            for word in words:
-                word_timestamps.append({
-                    "word": word,
-                    "start_time": current_time,
-                    "duration": word_durations
-                })
-                current_time += word_durations
+    for chunk in chunks:
+        chunk_duration = len(chunk) / 1000.0
+        chunk_leading_silence_duration = detect_leading_silence(chunk) / 1000.0  # duration in seconds
+        current_time += chunk_leading_silence_duration
 
-            return word_timestamps
+        with sr.AudioFile(chunk.export(format="wav")) as source:
+            audio_data = recognizer.record(source)
+            try:
+                text = recognizer.recognize_google(audio_data, language='en-IN')
+                words = text.split()
+                for word in words:
+                    word_duration = (chunk_duration - chunk_leading_silence_duration) / len(words)
+                    word_timestamps.append({
+                        "word": word,
+                        "start_time": current_time,
+                        "duration": word_duration
+                    })
+                    current_time += word_duration
+            except sr.UnknownValueError:
+                continue
+            except sr.RequestError:
+                print("Could not request results; check your network connection")
 
-        except sr.UnknownValueError:
-            print("Could not understand audio")
-        except sr.RequestError:
-            print("Could not request results; check your network connection")
-
-    return []
+    return word_timestamps
 
 if __name__ == "__main__":
     audio_path = "input_audio.wav"
