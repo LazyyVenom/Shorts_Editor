@@ -11,8 +11,9 @@ if __name__ == "__main__":
     start_times = [word_info['start_time'] for word_info in word_timestamps]
     durations = [word_info['duration'] for word_info in word_timestamps]
 
-    video = AddCaptions(video_path, captions, start_times, durations)
-    video.add_captions(captions)
+    addCaptions = AddCaptions(video_path, captions, start_times, durations)
+    addCaptions.add_captions()
+    video = addCaptions.video
 
     video_with_audio = add_audio_to_video(video, audio_path, 0)
     video_with_audio.write_videofile("output_video.mp4", codec="libx264", audio_codec="aac")

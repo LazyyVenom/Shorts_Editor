@@ -37,7 +37,7 @@ class AddCaptions:
             clips.append(text_clip)
 
         video_with_text = CompositeVideoClip(clips)
-        return video_with_text
+        self.video = video_with_text
 
 
 if __name__ == "__main__":
