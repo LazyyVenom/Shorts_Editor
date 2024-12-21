@@ -5,14 +5,14 @@ from typing import List
 class AddCaptions:
     def __init__(
         self,
-        video_path: str,
+        video,
         texts: List[str],
         start_times: List[float],
         durations: List[float],
         font_size: int = 50,
         font: str = "static\Coolvetica Rg.otf",
     ):
-        self.video = VideoFileClip(filename=video_path)
+        self.video = video
         self.font = font
         self.font_size = font_size
         self.texts = texts
