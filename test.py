@@ -1,4 +1,4 @@
-from utils.add_captions import AddCaptions
+from utils.add_captions import add_captions
 from utils.video_utils import add_audio_to_video
 from utils.audio_recognition import get_word_timestamps
 from moviepy import VideoFileClip
@@ -14,9 +14,7 @@ if __name__ == "__main__":
 
     video = VideoFileClip(video_path)
 
-    addCaptions = AddCaptions(video, captions, start_times, durations)
-    addCaptions.add_captions()
-    video = addCaptions.video
+    video = add_captions(video, captions, start_times, durations)
 
     video_with_audio = add_audio_to_video(video, audio_path, 0)
     video_with_audio.write_videofile("output_video.mp4", codec="libx264", audio_codec="aac")
