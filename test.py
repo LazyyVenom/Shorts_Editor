@@ -1,72 +1,47 @@
 import speech_recognition as sr
-import moviepy as mp
-import os
+from pydub import AudioSegment
+from pydub.silence import split_on_silence
 
-class HinglishCaptioner:
-    def __init__(self):
-        self.recognizer = sr.Recognizer()
+def get_word_timestamps(audio_file_path):
+    recognizer = sr.Recognizer()
+    audio = AudioSegment.from_wav(audio_file_path)
+    chunks = split_on_silence(audio, min_silence_len=100, silence_thresh=-40)
 
-    def extract_audio(self, video_path):
-        """Extract audio from video file"""
-        video = mp.VideoFileClip(video_path)
-        audio_path = "extracted_audio.wav"
-        video.audio.write_audiofile(audio_path)
-        return audio_path
+    word_timestamps = []
+    current_time = 0
 
-    def transcribe_audio(self, audio_path):
-        """Transcribe Hinglish audio to text"""
-        with sr.AudioFile(audio_path) as source:
-            audio = self.recognizer.record(source)
+    for chunk in chunks:
+        chunk_duration = len(chunk) / 1000.0  # duration in seconds
+        with sr.AudioFile(chunk.export(format="wav")) as source:
+            audio_data = recognizer.record(source)
             try:
-                # Using Google's speech recognition for Hinglish
-                transcript = self.recognizer.recognize_google(audio, language='hi-IN')
-                return transcript
+                text = recognizer.recognize_google(audio_data, language='en-IN')
+                words = text.split()
+                for word in words:
+                    word_timestamps.append({
+                        "word": word,
+                        "start_time": current_time,
+                        "duration": chunk_duration / len(words)
+                    })
+                    current_time += chunk_duration / len(words)
             except sr.UnknownValueError:
-                print("Could not understand audio")
-                return None
+                continue
             except sr.RequestError:
-                print("Error with speech recognition service")
-                return None
+                print("Could not request results; check your network connection")
 
-    def generate_short_caption(self, transcript, max_words=15):
-        """Generate a short caption by truncation"""
-        if not transcript:
-            return None
-        
-        
-        # Truncate to max words
-        words = transcript.split()
-        short_caption = ' '.join(words[:max_words])
-        
-        return short_caption + '...' if len(words) > max_words else short_caption
-
-    def process_video(self, video_path):
-        """Main method to process video and generate caption"""
-        # Extract audio
-        audio_path = self.extract_audio(video_path)
-        
-        # Transcribe audio
-        transcript = self.transcribe_audio(audio_path)
-        
-        # Generate short caption
-        short_caption = self.generate_short_caption(transcript)
-        
-        # Clean up temporary audio file
-        os.remove(audio_path)
-        
-        return short_caption
-
-# Example usage
-def main():
-    captioner = HinglishCaptioner()
-    video_path = "input_video.mp4"  # Replace with your video path
-    caption = captioner.process_video(video_path)
-    print("Short Caption:", caption)
+    return word_timestamps
 
 if __name__ == "__main__":
-    main()
+    audio_path = "input_audio.wav"
+    word_timestamps = get_word_timestamps(audio_path)
 
+    texts = [word_info['word'] for word_info in word_timestamps]
+    start_times = [word_info['start_time'] for word_info in word_timestamps]
+    durations = [word_info['duration'] for word_info in word_timestamps]
 
-# Required dependencies:
-# pip install SpeechRecognition
-# pip install moviepy
+    for word_info in word_timestamps:
+        print(f"Word: {word_info['word']}, Start Time: {word_info['start_time']:.2f} seconds, Duration: {word_info['duration']:.2f} seconds")
+
+    print("Texts:", texts)
+    print("Start Times:", start_times)
+    print("Durations:", durations)
