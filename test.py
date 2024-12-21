@@ -9,6 +9,7 @@ if __name__ == "__main__":
 
     word_timestamps = get_word_timestamps(audio_path)
     captions = [word_info['word'] for word_info in word_timestamps]
+    captions = list(map(str.upper, captions))
     start_times = [word_info['start_time'] for word_info in word_timestamps]
     durations = [word_info['duration'] for word_info in word_timestamps]
 
