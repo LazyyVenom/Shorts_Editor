@@ -10,7 +10,8 @@ def remove_audio_from_video(video):
 def add_audio_to_video(video: CompositeVideoClip, audio_path: str, start_time: float) -> CompositeVideoClip:
     audio = AudioFileClip(audio_path).with_start(start_time)
     
-    if video.audio is None:
+    # if video.audio is None:
+    if True:
         video = video.with_audio(audio)
         return video
     

@@ -4,14 +4,14 @@ from pydub import AudioSegment
 def get_word_timestamps(audio_file_path):
     recognizer = sr.Recognizer()
     audio = AudioSegment.from_wav(audio_file_path)
-    duration = len(audio) / 1000.0
+    duration = len(audio) / 1000.0  # total duration in seconds
 
     with sr.AudioFile(audio_file_path) as source:
         audio_data = recognizer.record(source)
         try:
             text = recognizer.recognize_google(audio_data, language='en-IN')
             words = text.split()
-            word_durations = duration / len(words)  
+            word_durations = duration / len(words)  # average duration per word
 
             word_timestamps = []
             current_time = 0
