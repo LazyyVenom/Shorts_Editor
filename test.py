@@ -15,6 +15,8 @@ if __name__ == "__main__":
 
     video = VideoFileClip(video_path)
 
+    # video.with_audio()
+
     video = add_captions(video, captions, start_times, durations)
 
     video_with_audio = add_audio_to_video(video, audio_path, 0)

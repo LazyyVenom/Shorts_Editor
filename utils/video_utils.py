@@ -1,5 +1,5 @@
 import os
-from moviepy import AudioFileClip, CompositeAudioClip
+from moviepy import AudioFileClip, CompositeAudioClip, CompositeVideoClip
 
 def remove_audio_from_video(video):
     video_without_audio = video.without_audio()
@@ -7,7 +7,7 @@ def remove_audio_from_video(video):
     return video_without_audio
 
 
-def add_audio_to_video(video, audio_path, start_time):
+def add_audio_to_video(video: CompositeVideoClip, audio_path: str, start_time: float) -> CompositeVideoClip:
     audio = AudioFileClip(audio_path).with_start(start_time)
     
     if video.audio is None:
