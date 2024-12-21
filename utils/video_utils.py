@@ -1,15 +1,15 @@
 import os
-from moviepy import VideoFileClip, AudioFileClip, CompositeAudioClip
+from moviepy import AudioFileClip, CompositeAudioClip
 
-def remove_audio_from_video(input_video_path : str, output_video_path : str):
-    video = VideoFileClip(input_video_path)
+def remove_audio_from_video(video : str):
     video_without_audio = video.without_audio()
+
+    return video_without_audio
 
     # video_without_audio.write_videofile(output_video_path, codec="libx264")
     
 
-def add_audio_to_video(video_path, audio_path, start_time):
-    video = VideoFileClip(video_path)
+def add_audio_to_video(video: str, audio_path, start_time):
     audio = AudioFileClip(audio_path).set_start(start_time)
     
     new_audio = CompositeAudioClip([video.audio, audio])
