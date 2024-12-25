@@ -4,28 +4,54 @@ import streamlit as st
 from utils import video_utils
 import os
 
-st.title("Video Captioning")
+def get_video_segment(video_path_label):
+    video_path = st.text_input(f"Enter the Path of the {video_path_label} video")
+    video_path = video_path.replace('"', '')
+    start_time = 0.0
+    end_time = 0.0
 
+    if os.path.exists(video_path):
+        video = video_utils.open_video(video_path)
+        video_duration = video_utils.get_video_duration(video)
+        video.close()
+
+        st.write("Cropping Section")
+        start_time, end_time = st.slider(f"Select the start and end time of the {video_path_label} video", 0.0, video_duration, (0.0, video_duration))
+
+        if start_time < end_time:
+            st.write(f"Selected video segment from {start_time} to {end_time}")
+        else:
+            st.write("Error: Start time must be less than end time")
+
+        st.video(video_path, start_time=start_time, end_time=end_time)
+    else:
+        st.write(f"The file doesn't exist: {video_path}")
+
+    return video_path, start_time, end_time
+
+st.title("Video Captioning")
 st.write("This is a simple web app to add captions to a video based on the audio of the video.")
 
-primary_video_path = st.text_input("Enter the Path of the primary video")
-primary_video_path = primary_video_path.replace('"','')
+with st.expander("Primary Video"):
+    primary_video_path, primary_start_time, primary_end_time = get_video_segment("primary")
 
-if os.path.exists(primary_video_path):
-    primary_video = video_utils.open_video(primary_video_path)
-    primary_video_duration = video_utils.get_video_duration(primary_video)
+with st.expander("Secondary Video"):
+    secondary_video_path, secondary_start_time, secondary_end_time = get_video_segment("secondary")
 
-    st.write("Cropping Section")
-    start_time, end_time = st.slider("Select the start and end time of the video", 0.0, primary_video_duration, (0.0, primary_video_duration))
-    
-    if start_time < end_time:
-        st.write(f"Selected video segment from {start_time} to {end_time}")
+with st.expander("Audio File"):
+    audio_file = st.text_input("Enter the Path of the audio file")
+    audio_file = audio_file.replace('"','')
+
+    if os.path.exists(audio_file):
+        audio_duration = reco.get_audio_duration(audio_file)
+
+        st.write("Cropping Section for Audio File")
+        audio_start_time, audio_end_time = st.slider("Select the start and end time of the audio file", 0.0, audio_duration, (0.0, audio_duration))
+        
+        if audio_start_time < audio_end_time:
+            st.write(f"Selected audio segment from {audio_start_time} to {audio_end_time}")
+        else:
+            st.write("Error: Start time must be less than end time")
+
     else:
-        st.write("Error: Start time must be less than end time")
-
-else:
-    st.write("The file don't exists: ", primary_video_path)
-
-secondary_video = st.text_input("Enter the Path of the secondary video")
-
-st.file_uploader("Upload an audio file", type=["wav"])
+        st.write("The file doesn't exist: ", audio_file)

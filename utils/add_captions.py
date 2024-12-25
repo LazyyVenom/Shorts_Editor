@@ -22,7 +22,7 @@ def add_captions(
             duration=duration,
             text_align="center",
             margin=(None, None, None, 20),
-            stroke_color="red",
+            stroke_color="yellow",
             stroke_width=2,
             vertical_align="bottom",
         ).with_start(start_time)
