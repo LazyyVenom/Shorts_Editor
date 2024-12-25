@@ -21,6 +21,8 @@ def add_captions(
             size=video.size,
             duration=duration,
             text_align="center",
+            stroke_color="red",
+            vertical_align="bottom",
         ).with_start(start_time)
         clips.append(text_clip)
 
