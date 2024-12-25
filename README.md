@@ -8,7 +8,7 @@
 
 - Trim videos automatically
 - Add transitions and effects
-- Sync audio with video
-- Auto Captioning
+- Sync audio with video ✅
+- Auto Captioning ✅
 - Adjust video speed
 - Export in multiple formats (e.g., MP4)
