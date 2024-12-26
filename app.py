@@ -4,7 +4,7 @@ from utils import audio_utils as audio_utils
 import streamlit as st
 from utils import video_utils
 import os
-
+from moviepy import AudioFileClip, CompositeVideoClip, VideoFileClip
 
 def get_video_segment(video_path_label):
     video_path = st.text_input(f"Enter the Path of the {video_path_label} video")
@@ -111,8 +111,9 @@ if st.button("Start Processing"):
     start_times = [word_info['start_time'] for word_info in word_timestamps]
     durations = [word_info['duration'] for word_info in word_timestamps]
 
-
-    video = video_utils.crop_video(video, 0, audio_duration)
+    video : CompositeVideoClip | VideoFileClip = video_utils.crop_video(video, 0, audio_duration)
+    audio = AudioFileClip(audio_file).with_start(0)
+    video = video.with_audio(audio)
     video = capt.add_captions(video, captions, start_times, durations)
     video.write_videofile("temp_video.mp4", codec="libx264", audio_codec="aac")
 

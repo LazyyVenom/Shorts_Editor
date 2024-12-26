@@ -6,7 +6,7 @@ def add_captions(
     texts: List[str],
     start_times: List[float],
     durations: List[float],
-    font_size: int = 50,
+    font_size: int = 90,
     color: str = "white",
     font: str = "static\Coolvetica Rg.otf",
 ) -> CompositeVideoClip:
@@ -17,14 +17,14 @@ def add_captions(
             text=text,
             font_size=font_size,
             color=color,
-            method="caption",
+            # method="caption",
             size=video.size,
             duration=duration,
             text_align="center",
-            margin=(None, None, None, 20),
-            stroke_color="yellow",
-            stroke_width=2,
-            vertical_align="bottom",
+            # margin=(None, None, None, 120),
+            stroke_color="black",
+            stroke_width=10,
+            vertical_align="center",
         ).with_start(start_time)
         clips.append(text_clip)
 

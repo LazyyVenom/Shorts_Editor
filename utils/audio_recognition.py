@@ -1,6 +1,7 @@
 import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
+import io
 
 def detect_leading_silence(sound, silence_threshold=-40.0, chunk_size=10):
     trim_ms = 0
@@ -27,23 +28,26 @@ def get_word_timestamps(audio_file_path):
         chunk_leading_silence_duration = detect_leading_silence(chunk) / 1000.0  # duration in seconds
         current_time += chunk_leading_silence_duration
 
-        with sr.AudioFile(chunk.export(format="wav")) as source:
-            audio_data = recognizer.record(source)
-            try:
-                text = recognizer.recognize_google(audio_data, language='en-IN')
-                words = text.split()
-                for word in words:
-                    word_duration = (chunk_duration - chunk_leading_silence_duration) / len(words)
-                    word_timestamps.append({
-                        "word": word,
-                        "start_time": current_time,
-                        "duration": word_duration
-                    })
-                    current_time += word_duration
-            except sr.UnknownValueError:
-                continue
-            except sr.RequestError:
-                print("Could not request results; check your network connection")
+        with io.BytesIO() as wav_buffer:
+            chunk.export(wav_buffer, format="wav")
+            wav_buffer.seek(0)
+            with sr.AudioFile(wav_buffer) as source:
+                audio_data = recognizer.record(source)
+                try:
+                    text = recognizer.recognize_google(audio_data, language='en-IN')
+                    words = text.split()
+                    for word in words:
+                        word_duration = (chunk_duration - chunk_leading_silence_duration) / len(words)
+                        word_timestamps.append({
+                            "word": word,
+                            "start_time": current_time,
+                            "duration": word_duration
+                        })
+                        current_time += word_duration
+                except sr.UnknownValueError:
+                    continue
+                except sr.RequestError:
+                    print("Could not request results; check your network connection")
 
     return word_timestamps
 
