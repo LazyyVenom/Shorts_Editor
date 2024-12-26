@@ -21,4 +21,8 @@ def open_video(video_path):
     return VideoFileClip(video_path)
 
 def crop_video(video, start_time, end_time):
-    return video.subclip(start_time, end_time)
+    return video.subclipped(start_time, end_time)
+
+def merge_videos(video1, video2):
+    final_video = CompositeVideoClip([video1, video2.with_start(video1.duration)])
+    return final_video

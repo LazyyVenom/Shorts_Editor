@@ -12,6 +12,9 @@ input_audio.mp3
 input_audio.m4a
 input_audio.wav
 output_video.mp4
+temp_audio.wav
+temp_processing.wav
+temp_video.mp4
 .vscode/
 
 # Distribution / packaging

@@ -48,7 +48,7 @@ def get_word_timestamps(audio_file_path):
     return word_timestamps
 
 if __name__ == "__main__":
-    audio_path = "input_audio.wav"
+    audio_path = "temp_processing.wav"
     word_timestamps = get_word_timestamps(audio_path)
 
     texts = [word_info['word'] for word_info in word_timestamps]
