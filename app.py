@@ -60,7 +60,7 @@ with st.expander("Audio File"):
 
 
 # Audio Processing Stuff Here
-audio_file = audio_utils.reduce_noise(audio_file, "output.wav")
-
+audio_utils.reduce_noise(audio_file, "temp_processing.wav")
+audio_utils.audio_speed_increase("temp_processing.wav", "temp_processing.wav", 1.25)
 
 # Video Processing Stuff Here

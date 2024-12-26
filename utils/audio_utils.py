@@ -18,4 +18,3 @@ def audio_speed_increase(input_file_path, output_file_path, speed_factor):
     sound = AudioSegment.from_file(input_file_path)
     sped_up_sound = sound.speedup(playback_speed=speed_factor, chunk_size=150, crossfade=25)
     sped_up_sound.export(output_file_path, format="wav")
-    return output_file_path
