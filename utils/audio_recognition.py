@@ -71,8 +71,6 @@ def get_word_timestamps_faster_whisper(audio_file_path):
 
     return wordlevel_info
 
-def hindi_to_hinglish(captions : List[str]) -> List[str]:
-    return text
 
 
 if __name__ == "__main__":
@@ -90,4 +88,6 @@ if __name__ == "__main__":
     # print("Start Times:", start_times)
     # print("Durations:", durations)
 
-    print(get_word_timestamps_faster_whisper("input_audio.wav"))
+    timestamps = get_word_timestamps_faster_whisper("input_audio.wav")
+    captions = [word_info['word'] for word_info in timestamps]
+    print(captions)
