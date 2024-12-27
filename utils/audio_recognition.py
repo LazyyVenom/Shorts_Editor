@@ -2,6 +2,8 @@ import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 import io
+from faster_whisper import WhisperModel
+from typing import List
 
 def detect_leading_silence(sound, silence_threshold=-40.0, chunk_size=10):
     trim_ms = 0
@@ -51,17 +53,41 @@ def get_word_timestamps(audio_file_path):
 
     return word_timestamps
 
+model_size = "medium"
+model = WhisperModel(model_size, device='cpu')
+
+def get_word_timestamps_faster_whisper(audio_file_path):
+    segments, info = model.transcribe(audio_file_path, language='hi', word_timestamps=True)
+    segments = list(segments)
+    for segment in segments:
+        for word in segment.words:
+            print("[%.2fs -> %.2fs] %s" % (word.start, word.end, word.word))
+
+    wordlevel_info = []
+
+    for segment in segments:
+        for word in segment.words:
+            wordlevel_info.append({'word':word.word,'start':word.start,'end':word.end})
+
+    return wordlevel_info
+
+def hindi_to_hinglish(captions : List[str]) -> List[str]:
+    return text
+
+
 if __name__ == "__main__":
-    audio_path = "temp_processing.wav"
-    word_timestamps = get_word_timestamps(audio_path)
+    # audio_path = "temp_processing.wav"
+    # word_timestamps = get_word_timestamps(audio_path)
 
-    texts = [word_info['word'] for word_info in word_timestamps]
-    start_times = [word_info['start_time'] for word_info in word_timestamps]
-    durations = [word_info['duration'] for word_info in word_timestamps]
+    # texts = [word_info['word'] for word_info in word_timestamps]
+    # start_times = [word_info['start_time'] for word_info in word_timestamps]
+    # durations = [word_info['duration'] for word_info in word_timestamps]
 
-    for word_info in word_timestamps:
-        print(f"Word: {word_info['word']}, Start Time: {word_info['start_time']:.2f} seconds, Duration: {word_info['duration']:.2f} seconds")
+    # for word_info in word_timestamps:
+    #     print(f"Word: {word_info['word']}, Start Time: {word_info['start_time']:.2f} seconds, Duration: {word_info['duration']:.2f} seconds")
 
-    print("Texts:", texts)
-    print("Start Times:", start_times)
-    print("Durations:", durations)
+    # print("Texts:", texts)
+    # print("Start Times:", start_times)
+    # print("Durations:", durations)
+
+    print(get_word_timestamps_faster_whisper("input_audio.wav"))
