@@ -36,7 +36,7 @@ def add_days_to_video(video, days):
             size=video.size,
             duration=video.duration,
             text_align="center",
-            margin=(None, 10),
+            margin=(None, 50),
             stroke_color="white",
             stroke_width=10,
             vertical_align="top",

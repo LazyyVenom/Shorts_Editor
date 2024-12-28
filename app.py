@@ -43,6 +43,9 @@ st.write(
     "This is a simple web app to add captions to a video based on the audio of the video."
 )
 
+day_count = st.text_input("Enter the day count")
+day_count = int(day_count) if day_count.isnumeric() else 0
+
 with st.expander("Primary Video"):
     primary_video_path, primary_start_time, primary_end_time = get_video_segment(
         "primary"
@@ -111,6 +114,7 @@ if st.button("Start Processing"):
     captions = [word_info['word'] for word_info in word_timestamps]
     print(captions)
     captions = list(map(str.upper, captions))
+    captions = list(map(str.strip, captions))
     start_times = [word_info['start'] for word_info in word_timestamps]
     durations = [word_info['end'] - word_info['start'] for word_info in word_timestamps]
 
@@ -118,6 +122,9 @@ if st.button("Start Processing"):
     audio = AudioFileClip(audio_file).with_start(0)
     video = video.with_audio(audio)
     video = capt.add_captions(video, captions, start_times, durations)
+
+    video = video_utils.add_days_to_video(video, day_count)
+
     video.write_videofile("temp_video.mp4", codec="mpeg4", audio_codec="aac")
 
     st.video("temp_video.mp4")
