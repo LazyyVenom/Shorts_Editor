@@ -1,4 +1,4 @@
-moviepy
+moviepy==2.1.1
 SpeechRecognition
 streamlit
 scipy
