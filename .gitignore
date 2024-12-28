@@ -15,6 +15,7 @@ output_video.mp4
 temp_audio.wav
 temp_processing.wav
 overlay_video.webm
+overlay_video.mp4
 temp_video.mp4
 .vscode/
 

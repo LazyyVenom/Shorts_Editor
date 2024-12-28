@@ -34,7 +34,7 @@ def add_days_to_video(video, days):
             font_size=90,
             color='black',
             size=video.size,
-            duration=video.duration,
+            duration=video. duration,
             text_align="center",
             margin=(None, 50),
             stroke_color="white",
