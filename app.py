@@ -125,7 +125,7 @@ if st.button("Start Processing"):
 
     video = video_utils.add_days_to_video(video, day_count)
 
-    video.write_videofile("temp_video.mp4", codec="mpeg4", audio_codec="aac")
+    video.write_videofile("temp_video.mp4", codec="libx264", audio_codec="aac")
 
     st.video("temp_video.mp4")
 
