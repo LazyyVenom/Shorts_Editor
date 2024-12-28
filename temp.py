@@ -6,7 +6,8 @@ def overlay_transparent_video(original_video_path, overlay_video_path, output_vi
     print(original_video.size)
 
     overlay_video = VideoFileClip(overlay_video_path)
-    overlay_video = overlay_video.with_mask().fx(vfx.MaskColor, 1.0, 0.192, 0.192)
+    overlay_video.with_effects
+    overlay_video = overlay_video.with_mask().with_effects([vfx.MaskColor((1.0, 0.192, 0.192))])
     print(overlay_video.size)
 
     if overlay_size:
