@@ -6,6 +6,7 @@ from utils import video_utils
 from faster_whisper import WhisperModel
 import os
 from moviepy import AudioFileClip, CompositeVideoClip, VideoFileClip
+from utils.vfx_utils import overlay_transparent_video
 
 def get_video_segment(video_path_label):
     video_path = st.text_input(f"Enter the Path of the {video_path_label} video")
@@ -119,11 +120,14 @@ if st.button("Start Processing"):
     durations = [word_info['end'] - word_info['start'] for word_info in word_timestamps]
 
     video : CompositeVideoClip | VideoFileClip = video_utils.crop_video(video, 0, audio_duration)
-    audio = AudioFileClip(audio_file).with_start(0)
-    video = video.with_audio(audio)
+    video = video_utils.add_days_to_video(video, day_count)
+
     video = capt.add_captions(video, captions, start_times, durations)
 
-    video = video_utils.add_days_to_video(video, day_count)
+    video = overlay_transparent_video(video, "static\videos\Starting_Notification.mp4",color=(255,49,49),position=("center","top"), overlay_size=(623,180))
+    
+    audio = AudioFileClip(audio_file).with_start(0)
+    video = video.with_audio(audio)
 
     video.write_videofile("temp_video.mp4", codec="libx264", audio_codec="aac")
 
