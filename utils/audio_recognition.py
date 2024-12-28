@@ -56,8 +56,8 @@ def get_word_timestamps(audio_file_path):
 model_size = "medium"
 model = WhisperModel(model_size, device='cpu')
 
-def get_word_timestamps_faster_whisper(audio_file_path):
-    segments, info = model.transcribe(audio_file_path, language='hi', word_timestamps=True)
+def get_word_timestamps_faster_whisper(audio_file_path, model=model) -> List[dict]:
+    segments, info = model.transcribe(audio_file_path, language='en', word_timestamps=True)
     segments = list(segments)
     for segment in segments:
         for word in segment.words:

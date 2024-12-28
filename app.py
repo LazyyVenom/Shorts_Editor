@@ -3,6 +3,7 @@ from utils import audio_recognition as reco
 from utils import audio_utils as audio_utils
 import streamlit as st
 from utils import video_utils
+from faster_whisper import WhisperModel
 import os
 from moviepy import AudioFileClip, CompositeVideoClip, VideoFileClip
 
@@ -102,20 +103,22 @@ if st.button("Start Processing"):
         video = primary_video
 
     # Audio Recognition Stuff Here
-    word_timestamps = reco.get_word_timestamps(audio_file)
+    model_size = "medium"
+    model = WhisperModel(model_size, device='cpu')
+    word_timestamps = reco.get_word_timestamps_faster_whisper(audio_file, model=model)
 
     # Captioning Stuff Here
     captions = [word_info['word'] for word_info in word_timestamps]
     print(captions)
     captions = list(map(str.upper, captions))
-    start_times = [word_info['start_time'] for word_info in word_timestamps]
-    durations = [word_info['duration'] for word_info in word_timestamps]
+    start_times = [word_info['start'] for word_info in word_timestamps]
+    durations = [word_info['end'] - word_info['start'] for word_info in word_timestamps]
 
     video : CompositeVideoClip | VideoFileClip = video_utils.crop_video(video, 0, audio_duration)
     audio = AudioFileClip(audio_file).with_start(0)
     video = video.with_audio(audio)
     video = capt.add_captions(video, captions, start_times, durations)
-    video.write_videofile("temp_video.mp4", codec="libx264", audio_codec="aac")
+    video.write_videofile("temp_video.mp4", codec="mpeg4", audio_codec="aac")
 
     st.video("temp_video.mp4")
 
