@@ -118,14 +118,16 @@ if st.button("Start Processing"):
     captions = list(map(str.strip, captions))
     start_times = [word_info['start'] for word_info in word_timestamps]
     durations = [word_info['end'] - word_info['start'] for word_info in word_timestamps]
-
+ 
     video : CompositeVideoClip | VideoFileClip = video_utils.crop_video(video, 0, audio_duration)
-    video = video_utils.add_days_to_video(video, day_count)
-
+ 
     video = capt.add_captions(video, captions, start_times, durations)
+    # video = video_utils.add_days_to_video(video, day_count)
 
-    video = overlay_transparent_video(video, "static\videos\Starting_Notification.mp4",color=(255,49,49),position=("center","top"), overlay_size=(623,180))
-    
+    # video = overlay_transparent_video(video, r"static\videos\Starting_Notification.mp4",color=(255,49,49),position=("center","top"), overlay_size=(623,180))
+    # video = overlay_transparent_video(video, r"static\videos\Like_Badge.webm",color=(0,0,0),position=("center","bottom"), overlay_size=(180,180),start=5)
+    # video = overlay_transparent_video(video, r"static\videos\Subscribe.mp4",color=(0,254,0),position=("center","bottom"), overlay_size=(180,180),start=10)
+
     audio = AudioFileClip(audio_file).with_start(0)
     video = video.with_audio(audio)
 

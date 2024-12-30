@@ -17,13 +17,13 @@ def add_captions(
             text=text,
             font_size=font_size,
             color=color,
-            # method="caption",
+            method="caption",
             size=video.size,
             duration=duration,
             text_align="center",
             # margin=(None, None, None, 120),
             stroke_color="black",
-            stroke_width=10,
+            stroke_width=15,
             vertical_align="center",
         ).with_start(start_time)
         clips.append(text_clip)
@@ -32,7 +32,7 @@ def add_captions(
     return video_with_text
 
 if __name__ == "__main__":
-    video_path = "input_video.mp4"
+    video_path = r"C:\Users\Anubhav Choubey\Downloads\WhatsApp Video 2024-12-28 at 18.54.08_ad2cb422.mp4"
     
     video = VideoFileClip(video_path)
 
@@ -43,4 +43,4 @@ if __name__ == "__main__":
     texts = list(map(str.upper, texts))
 
     video_with_text = add_captions(video, texts, start_times, durations)
-    video_with_text.write_videofile("output_video.mp4", codec="libx264", audio_codec="aac")
+    video_with_text.write_videofile(r"output.mp4", codec="libx264", audio_codec="aac")
