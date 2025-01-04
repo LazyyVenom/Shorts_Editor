@@ -128,8 +128,8 @@ if st.button("Start Processing"):
     # video = overlay_transparent_video(video, r"static\videos\Like_Badge.webm",color=(0,0,0),position=("center","bottom"), overlay_size=(180,180),start=5)
     # video = overlay_transparent_video(video, r"static\videos\Subscribe.mp4",color=(0,254,0),position=("center","bottom"), overlay_size=(180,180),start=10)
 
-    audio = AudioFileClip(audio_file).with_start(0)
-    video = video.with_audio(audio)
+    # audio = AudioFileClip(audio_file).with_start(0)
+    # video = video.with_audio(audio)
 
     video.write_videofile("temp_video.mp4", codec="libx264", audio_codec="aac")
 
