@@ -135,4 +135,4 @@ if st.button("Start Processing"):
 
     st.video("temp_video.mp4")
 
-    video.close() 
+    video.close()
