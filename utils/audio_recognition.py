@@ -72,7 +72,6 @@ def get_word_timestamps_faster_whisper(audio_file_path, model=model) -> List[dic
     return wordlevel_info
 
 
-
 if __name__ == "__main__":
     # audio_path = "temp_processing.wav"
     # word_timestamps = get_word_timestamps(audio_path)
