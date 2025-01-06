@@ -113,9 +113,9 @@ if st.button("Start Processing"):
 
     # Captioning Stuff Here
     captions = [word_info['word'] for word_info in word_timestamps]
-    print(captions)
     captions = list(map(str.upper, captions))
     captions = list(map(str.strip, captions))
+    print(captions)
     start_times = [word_info['start'] for word_info in word_timestamps]
     durations = [word_info['end'] - word_info['start'] for word_info in word_timestamps]
  
