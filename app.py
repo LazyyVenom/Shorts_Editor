@@ -130,6 +130,8 @@ if st.button("Start Processing"):
     input_hinglish_captions = input_hinglish_captions.replace("]","")
     captions = input_hinglish_captions.split(",")
 
+    captions = list(map(str.upper, captions))
+
     video : CompositeVideoClip | VideoFileClip = video_utils.crop_video(video, 0, audio_duration)
  
     video = capt.add_captions(video, captions, start_times, durations)
