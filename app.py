@@ -123,14 +123,11 @@ if st.button("Start Processing"):
     start_times = [word_info['start'] for word_info in word_timestamps]
     durations = [word_info['end'] - word_info['start'] for word_info in word_timestamps]
  
-    input_hinglish_captions = input("Enter the hinglish captions: ")
+    # input_hinglish_captions = input("Enter the hinglish captions: ")
 
-    input_hinglish_captions = input_hinglish_captions.replace("'","")
-    input_hinglish_captions = input_hinglish_captions.replace("[","")
-    input_hinglish_captions = input_hinglish_captions.replace("]","")
-    captions = input_hinglish_captions.split(",")
+    # captions = input_hinglish_captions.split(",")
 
-    captions = list(map(str.upper, captions))
+    # captions = list(map(str.upper, captions))
 
     video : CompositeVideoClip | VideoFileClip = video_utils.crop_video(video, 0, audio_duration)
  
