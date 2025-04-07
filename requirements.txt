@@ -4,3 +4,4 @@ streamlit
 scipy
 faster-whisper
 indic_transliteration
+pydub
