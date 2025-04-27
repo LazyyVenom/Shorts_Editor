@@ -2,7 +2,7 @@ from utils.add_captions import add_captions
 from utils.video_utils import add_audio_to_video
 from utils.audio_recognition import get_word_timestamps
 from moviepy import VideoFileClip
- 
+      
 if __name__ == "__main__":
     video_path = r"C:\Users\Anubhav Choubey\AppData\Local\CapCut\Videos\Day8(1).mp4"
     audio_path = r"C:\Users\Anubhav Choubey\AppData\Local\CapCut\Videos\Day8.WAV"
